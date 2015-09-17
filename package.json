@@ -1,0 +1,14 @@
+{
+  "name": "earnest-ui-challenge",
+  "version": "1.0.0",
+  "author": "Josh Turner",
+  "description": "A simple UI",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joshturn/earnest-ui-challenge.git"
+  },
+  "dependencies": {
+    "react": "^0.13.3"
+  }
+}
