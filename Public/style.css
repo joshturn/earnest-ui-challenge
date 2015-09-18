@@ -1,10 +1,13 @@
-/*
-Add User Form
-*/
+/* Add User Form */
 
 .addUserForm {
   border: 2px black;
-  border-radius: 10px
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.addFormTitle{
+  font-size: 25px;
 }
 
 .addUserTitle {
@@ -15,13 +18,16 @@ Add User Form
 	width: 200px;
 	margin: 10px;
 }
+/* User List */
 
-/*
-User View
-*/
+.userList{
+  font-size: 30px;
+  margin: 10px;
+}
+
+/* User View */
 
 .user {
-	border: 1px solid black;
 	border-radius: 2px;
 	float: left;
 	font-size: 20px;
@@ -32,7 +38,7 @@ User View
 
 .username{
   float: left;
-  margin: 2px 10px 2px 2px;
+  margin: 2px 10px 2px 10px;
   width: 20%;
 }
 
