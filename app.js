@@ -29,13 +29,12 @@ var Main = React.createClass({
     this.setState({
       allUsers: newUsersArray
     });
-    console.log('userCount on remove: ', this.state.allUsers.length);
   },
   render: function(){
   	return (
       <div>
-        <AddUser addNew={this.addUser} index={this.state.allUsers.length}/>
-        <UserList users={this.state.allUsers} edit={this.editUser} remove={this.removeUser} />
+        <AddUser addNew={this.addUser} index={this.state.allUsers.length} remove={this.removeUser}/>
+        <UserList users={this.state.allUsers} edit={this.editUser}  />
       </div>
   	)
   }
@@ -49,7 +48,7 @@ var UserList = React.createClass({
     return (
       <div>
       {users.map(function(user){
-        return <UserView userName={user.name} userRoles={user.roles} editUser={edit} remove={remove} index={user.index}/>
+        return <UserView userName={user.name} userRoles={user.roles} editUser={edit} remove={user.remove} key={user.name} index={user.index}/>
       })}
       </div>
     );
@@ -92,20 +91,19 @@ var UserView = React.createClass({
     this.forceUpdate();
   },
   handleDelete: function(){
-    console.log(this);
-    this.props.remove(this.state.index);
+    this.props.remove(this.props.index);
   },
   render: function(){
     if (this.state.editMode){
       return (
           <div className="form-inline user">
-           <input className="username" value={this.state.name} maxLength="25" onChange={this.updateName}/>
-           <span className="roles" className="form-inline">Roles:</span> 
-           <input value={this.state.role1} maxLength="25" onChange={this.updateRole1} />
-           <input value={this.state.role2} maxLength="25" onChange={this.updateRole2} />
-           <input value={this.state.role3} maxLength="25" onChange={this.updateRole3} />
-           <button className="btn btn-success" onClick={this.handleUpdate}>Update</button>
-           <button className="btn btn-danger" onClick={this.handleDelete}>Delete</button>
+           <input className="username" value={this.state.name} maxLength="20" minLength="3" onChange={this.updateName}/>
+           <span className="form-inline rolesTitle">Roles:</span> 
+           <input className="role" value={this.state.role1} maxLength="15" onChange={this.updateRole1} />
+           <input className="role" value={this.state.role2} maxLength="15" onChange={this.updateRole2} />
+           <input className="role" value={this.state.role3} maxLength="15" onChange={this.updateRole3} />
+           <button className="btn btn-success userButton" onClick={this.handleUpdate}>Update</button>
+           <button className="btn btn-danger userButton" onClick={this.handleDelete}>Delete</button>
          </div>
       )
     } else {
@@ -113,8 +111,8 @@ var UserView = React.createClass({
        <div className="user">
          <div className="form-inline">
            <span className="username">{this.state.name}</span>
-           <span className="roles">Roles:</span> 
-           {this.state.role1} {this.state.role2} {this.state.role3} 
+           <span className="rolesTitle">Roles:</span> 
+           <span className="role">{this.state.role1}</span><span className="role">{this.state.role2}</span><span className="role">{this.state.role3}</span> 
            <button className="btn btn-primary userButton" onClick={this.handleEdit}>Edit</button>
            <button className="btn btn-danger userButton" onClick={this.handleDelete}>Delete</button>
          </div>
@@ -150,7 +148,8 @@ var AddUser = React.createClass({
   	var currentUser = {
   		name: this.state.name,
   		roles: [this.state.role1, this.state.role2, this.state.role3],
-      index: this.props.index
+      index: this.props.index,
+      remove: this.props.remove
   	};
     this.props.addNew(currentUser);
     this.setState({
@@ -163,18 +162,18 @@ var AddUser = React.createClass({
   },
   render: function(){
   	return (
-      <div>
-        Add User
+      <div className="addUserForm">
+        <span className="addFormTitle">Add User</span>
         <form onSubmit={this.submitUser}>
           <div className="form-group">
-            <label> User Name:  </label>
-            <input type="text" value={this.state.name} onChange={this.changeName} placeholder="Name"/>
+            <label className="addUserTitle"> User Name:  </label>
+            <input className="form-control addUserField" type="text" maxLength="20" value={this.state.name} onChange={this.changeName} placeholder="Name" pattern=".{3,}" required title="3 characters minimum"/>
           </div>
           <div className="form-group">
-            <label> User Roles:  </label> 
-            <input type="text" maxLength="25" value={this.state.role1} onChange={this.changeRole1} placeholder="Role 1"/>
-            <input type="text" maxLength="25" value={this.state.role2} onChange={this.changeRole2} placeholder="Role 2"/>
-            <input type="text" maxLength="25" value={this.state.role3} onChange={this.changeRole3} placeholder="Role 3"/>
+            <label className="addUserTitle"> User Roles:  </label> 
+            <input className="form-control addUserField" type="text" maxLength="15" value={this.state.role1} onChange={this.changeRole1} placeholder="Role 1"/>
+            <input className="form-control addUserField" type="text" maxLength="15" value={this.state.role2} onChange={this.changeRole2} placeholder="Role 2"/>
+            <input className="form-control addUserField" type="text" maxLength="15" value={this.state.role3} onChange={this.changeRole3} placeholder="Role 3"/>
           </div>
           <button className="btn btn-primary">Submit</button>
         </form>

@@ -1,44 +1,60 @@
+/*
+Add User Form
+*/
+
 .addUserForm {
   border: 2px black;
   border-radius: 10px
 }
 
-.username{
-  float: left;
-  margin: 2px 50px 2px 2px;
-  width: 40px;
+.addUserTitle {
+	font-size: 20px;
 }
 
-.roles {
-	float: left;
-	margin: 2px 50px 2px 2px;
+.addUserField {
+	width: 200px;
+	margin: 10px;
 }
+
+/*
+User View
+*/
 
 .user {
-	border: 2px solid black;
+	border: 1px solid black;
+	border-radius: 2px;
 	float: left;
 	font-size: 20px;
 	white-space: nowrap;
-	width: 800px;
+	width: 90%;
 	margin: 5px;
 }
 
-.role {
-	width: 100px;
-	float: left;
-	margin: 2px 20px 2px 2px;
+.username{
+  float: left;
+  margin: 2px 10px 2px 2px;
+  width: 20%;
 }
 
-.userForm {
-	background: yellow;
-	border: 5px solid black;
+.rolesTitle{
+	float: left;
+	margin: 2px 10px 2px 2px;
+}
+
+.role{
+	float: left;
+	margin: 2px 2px 2px 2px;
+	width: 15%;
+}
+
+
+.userRole{
+	font-size: 20px;
+	float: left;
+	border: none;
 }
 
 .userButton{
 	float: right;
 	margin: 2px;
-}
-
-button{
-  margin: 2px;
 }
