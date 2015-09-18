@@ -1,0 +1,30 @@
+.username{
+  float: left;
+  margin: 2px 50px 2px 2px;
+  width: 40px;
+}
+
+.roles {
+	float: left;
+	margin: 2px 50px 2px 2px;
+}
+
+.user {
+	border: 2px solid black;
+	float: left;
+	font-size: 20px;
+	white-space: nowrap;
+	width: 100%;
+	margin: 5px;
+}
+
+.role {
+	width: 100px;
+	float: left;
+	margin: 2px 20px 2px 2px;
+}
+
+.userForm {
+	background: yellow;
+	border: 5px solid black;
+}
