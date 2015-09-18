@@ -8,20 +8,17 @@ var Main = React.createClass({
 
   getInitialState: function getInitialState() {
     return {
-      allUsers: [{
-        name: 'Josh',
-        roles: ['Test1', 'Test2', 'Test3']
-      }],
-      userCount: 0
+      allUsers: []
     };
   },
   addUser: function addUser(user) {
     var newUsersArray = this.state.allUsers.slice();
     newUsersArray.push(user);
     this.setState({
-      allUsers: newUsersArray,
-      userCount: this.state.userCount++
+      allUsers: newUsersArray
     });
+    console.log('User: ', user);
+    console.log('userCount on add: ', this.state.allUsers.length);
   },
   editUser: function editUser(user, index) {
     var newUsersArray = this.state.allUsers.slice();
@@ -30,19 +27,21 @@ var Main = React.createClass({
       allUsers: newUsersArray
     });
   },
-  removeUser: function removeUser(user, index) {
-    var newUsersArray = this.state.allUsers.slice(index, 1);
+  removeUser: function removeUser(index) {
+    console.log('index to remove at: ', index);
+    var newUsersArray = this.state.allUsers.slice();
+    newUsersArray.splice(index, 1);
     this.setState({
-      allUsers: newUsersArray,
-      userCount: this.state.userCount--
+      allUsers: newUsersArray
     });
+    console.log('userCount on remove: ', this.state.allUsers.length);
   },
   render: function render() {
     return React.createElement(
       'div',
       null,
-      React.createElement(AddUser, { addNew: this.addUser }),
-      React.createElement(UserList, { users: this.state.allUsers, edit: this.editUser, remove: this.removeUser, count: this.state.userCount })
+      React.createElement(AddUser, { addNew: this.addUser, index: this.state.allUsers.length }),
+      React.createElement(UserList, { users: this.state.allUsers, edit: this.editUser, remove: this.removeUser })
     );
   }
 });
@@ -54,13 +53,11 @@ var UserList = React.createClass({
     var users = this.props.users;
     var edit = this.props.edit;
     var remove = this.props.remove;
-    var count = this.props.count;
     return React.createElement(
       'div',
       null,
       users.map(function (user) {
-        return React.createElement(UserView, { userName: user.name, userRoles: user.roles, editUser: edit, remove: remove, count: count });
-        userCount++;
+        return React.createElement(UserView, { userName: user.name, userRoles: user.roles, editUser: edit, remove: remove, index: user.index });
       })
     );
   }
@@ -99,23 +96,23 @@ var UserView = React.createClass({
       name: this.state.name,
       roles: [this.state.role1, this.state.role2, this.state.role3]
     };
-    var index = this.props.count;
-    this.props.editUser(currentUser, index);
+    this.props.editUser(currentUser, this.props.index);
     this.setState({ editMode: false });
     this.forceUpdate();
   },
   handleDelete: function handleDelete() {
-    return {};
+    console.log(this);
+    this.props.remove(this.state.index);
   },
   render: function render() {
     if (this.state.editMode) {
       return React.createElement(
         'div',
-        { className: 'user' },
+        { className: 'form-inline user' },
         React.createElement('input', { className: 'username', value: this.state.name, maxLength: '25', onChange: this.updateName }),
         React.createElement(
           'span',
-          { className: 'roles' },
+          { className: 'roles', className: 'form-inline' },
           'Roles:'
         ),
         React.createElement('input', { value: this.state.role1, maxLength: '25', onChange: this.updateRole1 }),
@@ -123,12 +120,12 @@ var UserView = React.createClass({
         React.createElement('input', { value: this.state.role3, maxLength: '25', onChange: this.updateRole3 }),
         React.createElement(
           'button',
-          { className: 'editButton', onClick: this.handleUpdate },
+          { className: 'btn btn-success', onClick: this.handleUpdate },
           'Update'
         ),
         React.createElement(
           'button',
-          { className: 'deleteButton' },
+          { className: 'btn btn-danger', onClick: this.handleDelete },
           'Delete'
         )
       );
@@ -137,29 +134,33 @@ var UserView = React.createClass({
         'div',
         { className: 'user' },
         React.createElement(
-          'span',
-          { className: 'username' },
-          this.state.name
-        ),
-        React.createElement(
-          'span',
-          { className: 'roles' },
-          'Roles:'
-        ),
-        this.state.role1,
-        ' ',
-        this.state.role2,
-        ' ',
-        this.state.role3,
-        React.createElement(
-          'button',
-          { className: 'editButton', onClick: this.handleEdit },
-          'Edit'
-        ),
-        React.createElement(
-          'button',
-          { className: 'deleteButton' },
-          'Delete'
+          'div',
+          { className: 'form-inline' },
+          React.createElement(
+            'span',
+            { className: 'username' },
+            this.state.name
+          ),
+          React.createElement(
+            'span',
+            { className: 'roles' },
+            'Roles:'
+          ),
+          this.state.role1,
+          ' ',
+          this.state.role2,
+          ' ',
+          this.state.role3,
+          React.createElement(
+            'button',
+            { className: 'btn btn-primary userButton', onClick: this.handleEdit },
+            'Edit'
+          ),
+          React.createElement(
+            'button',
+            { className: 'btn btn-danger userButton', onClick: this.handleDelete },
+            'Delete'
+          )
         )
       );
     }
@@ -193,35 +194,50 @@ var AddUser = React.createClass({
     event.preventDefault();
     var currentUser = {
       name: this.state.name,
-      roles: [this.state.role1, this.state.role2, this.state.role3]
+      roles: [this.state.role1, this.state.role2, this.state.role3],
+      index: this.props.index
     };
     this.props.addNew(currentUser);
     this.setState({
-      newUser: {
-        name: '',
-        role1: '',
-        role2: '',
-        role3: ''
-      }
+      name: '',
+      role1: '',
+      role2: '',
+      role3: ''
     });
   },
   render: function render() {
     return React.createElement(
       'div',
-      { className: 'userForm' },
+      null,
       'Add User',
       React.createElement(
         'form',
         { onSubmit: this.submitUser },
-        'User Name:',
-        React.createElement('input', { type: 'text', value: this.state.name, onChange: this.changeName }),
-        'User Roles:',
-        React.createElement('input', { type: 'text', maxLength: '25', value: this.state.role1, onChange: this.changeRole1 }),
-        React.createElement('input', { type: 'text', maxLength: '25', value: this.state.role2, onChange: this.changeRole2 }),
-        React.createElement('input', { type: 'text', maxLength: '25', value: this.state.role3, onChange: this.changeRole3 }),
+        React.createElement(
+          'div',
+          { className: 'form-group' },
+          React.createElement(
+            'label',
+            null,
+            ' User Name:  '
+          ),
+          React.createElement('input', { type: 'text', value: this.state.name, onChange: this.changeName, placeholder: 'Name' })
+        ),
+        React.createElement(
+          'div',
+          { className: 'form-group' },
+          React.createElement(
+            'label',
+            null,
+            ' User Roles:  '
+          ),
+          React.createElement('input', { type: 'text', maxLength: '25', value: this.state.role1, onChange: this.changeRole1, placeholder: 'Role 1' }),
+          React.createElement('input', { type: 'text', maxLength: '25', value: this.state.role2, onChange: this.changeRole2, placeholder: 'Role 2' }),
+          React.createElement('input', { type: 'text', maxLength: '25', value: this.state.role3, onChange: this.changeRole3, placeholder: 'Role 3' })
+        ),
         React.createElement(
           'button',
-          null,
+          { className: 'btn btn-primary' },
           'Submit'
         )
       )
