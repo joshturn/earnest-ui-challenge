@@ -12,8 +12,6 @@ var Main = React.createClass({
     this.setState({
       allUsers: newUsersArray
     });
-      console.log('User: ', user);
-      console.log('userCount on add: ', this.state.allUsers.length);
   },
   editUser: function(user, index){
     var newUsersArray = this.state.allUsers.slice();
@@ -22,8 +20,13 @@ var Main = React.createClass({
       allUsers: newUsersArray
     });
   },
-  removeUser: function(index){
-    console.log('index to remove at: ', index);
+  removeUser: function(user){
+    var index = null;
+    for (var i = 0; i < this.state.allUsers.length; i++){
+      if (this.state.allUsers[i].name === user){
+        index = i;
+      }
+    }
     var newUsersArray = this.state.allUsers.slice();
     newUsersArray.splice(index, 1);
     this.setState({
@@ -33,8 +36,8 @@ var Main = React.createClass({
   render: function(){
   	return (
       <div>
-        <AddUser addNew={this.addUser} index={this.state.allUsers.length} remove={this.removeUser}/>
-        <UserList users={this.state.allUsers} edit={this.editUser}  />
+        <AddUser addNew={this.addUser} index={this.state.allUsers.length} />
+        <UserList users={this.state.allUsers} edit={this.editUser}  remove={this.removeUser}/>
       </div>
   	)
   }
@@ -48,7 +51,7 @@ var UserList = React.createClass({
     return (
       <div>
       {users.map(function(user){
-        return <UserView userName={user.name} userRoles={user.roles} editUser={edit} remove={user.remove} key={user.name} index={user.index}/>
+        return <UserView userName={user.name} userRoles={user.roles} editUser={edit} remove={remove} key={user.name} />
       })}
       </div>
     );
@@ -91,7 +94,7 @@ var UserView = React.createClass({
     this.forceUpdate();
   },
   handleDelete: function(){
-    this.props.remove(this.props.index);
+    this.props.remove(this.state.name);
   },
   render: function(){
     if (this.state.editMode){
@@ -102,8 +105,8 @@ var UserView = React.createClass({
            <input className="role" value={this.state.role1} maxLength="15" onChange={this.updateRole1} />
            <input className="role" value={this.state.role2} maxLength="15" onChange={this.updateRole2} />
            <input className="role" value={this.state.role3} maxLength="15" onChange={this.updateRole3} />
-           <button className="btn btn-success userButton" onClick={this.handleUpdate}>Update</button>
            <button className="btn btn-danger userButton" onClick={this.handleDelete}>Delete</button>
+           <button className="btn btn-success userButton" onClick={this.handleUpdate}>Update</button>
          </div>
       )
     } else {
@@ -113,8 +116,8 @@ var UserView = React.createClass({
            <span className="username">{this.state.name}</span>
            <span className="rolesTitle">Roles:</span> 
            <span className="role">{this.state.role1}</span><span className="role">{this.state.role2}</span><span className="role">{this.state.role3}</span> 
-           <button className="btn btn-primary userButton" onClick={this.handleEdit}>Edit</button>
            <button className="btn btn-danger userButton" onClick={this.handleDelete}>Delete</button>
+           <button className="btn btn-primary userButton" onClick={this.handleEdit}>Edit</button>
          </div>
        </div>
     )
@@ -148,8 +151,7 @@ var AddUser = React.createClass({
   	var currentUser = {
   		name: this.state.name,
   		roles: [this.state.role1, this.state.role2, this.state.role3],
-      index: this.props.index,
-      remove: this.props.remove
+      index: this.props.index
   	};
     this.props.addNew(currentUser);
     this.setState({
