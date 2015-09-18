@@ -11,22 +11,38 @@ var Main = React.createClass({
       allUsers: [{
         name: 'Josh',
         roles: ['Test1', 'Test2', 'Test3']
-      }]
+      }],
+      userCount: 0
     };
   },
   addUser: function addUser(user) {
     var newUsersArray = this.state.allUsers.slice();
     newUsersArray.push(user);
-    this.setState({ allUsers: newUsersArray });
+    this.setState({
+      allUsers: newUsersArray,
+      userCount: this.state.userCount++
+    });
   },
-  editUser: function editUser(user) {},
-  deleteUser: function deleteUser(user) {},
+  editUser: function editUser(user, index) {
+    var newUsersArray = this.state.allUsers.slice();
+    newUsersArray[index] = user;
+    this.setState({
+      allUsers: newUsersArray
+    });
+  },
+  removeUser: function removeUser(user, index) {
+    var newUsersArray = this.state.allUsers.slice(index, 1);
+    this.setState({
+      allUsers: newUsersArray,
+      userCount: this.state.userCount--
+    });
+  },
   render: function render() {
     return React.createElement(
       'div',
       null,
       React.createElement(AddUser, { addNew: this.addUser }),
-      React.createElement(UserList, { users: this.state.allUsers })
+      React.createElement(UserList, { users: this.state.allUsers, edit: this.editUser, remove: this.removeUser, count: this.state.userCount })
     );
   }
 });
@@ -34,78 +50,120 @@ var Main = React.createClass({
 var UserList = React.createClass({
   displayName: 'UserList',
 
-  getInitialState: function getInitialState() {
-    return {
-      editMode: false
-    };
-  },
-
-  handleEdit: function handleEdit(event) {
-    this.setState({
-      editMode: !this.state.editMode
-    });
-  },
-  handleDelete: function handleDelete(event) {},
   render: function render() {
-    var list = this;
-    var users = this.props.users.map(function (user) {
-      var roles = user.roles.map(function (role) {
-        return React.createElement(
-          'div',
-          { className: 'role' },
-          ' ',
-          role,
-          ' '
-        );
-      });
-      debugger;
-      if (list.state.editMode === false) {
-        return React.createElement(
-          'div',
-          { className: 'user' },
-          React.createElement(
-            'span',
-            { className: 'username' },
-            user.name
-          ),
-          React.createElement(
-            'span',
-            { className: 'roles' },
-            'Roles:'
-          ),
-          ' ',
-          roles,
-          React.createElement(
-            'button',
-            { className: 'editButton', onClick: list.handleEdit },
-            'Edit'
-          ),
-          React.createElement(
-            'button',
-            { className: 'deleteButton' },
-            'Delete'
-          )
-        );
-      } else {
-        return React.createElement(
-          'div',
-          null,
-          'Test'
-        );
-      }
-    });
-
+    var users = this.props.users;
+    var edit = this.props.edit;
+    var remove = this.props.remove;
+    var count = this.props.count;
     return React.createElement(
       'div',
       null,
-      React.createElement(
-        'div',
-        null,
-        users
-      )
+      users.map(function (user) {
+        return React.createElement(UserView, { userName: user.name, userRoles: user.roles, editUser: edit, remove: remove, count: count });
+        userCount++;
+      })
     );
   }
+});
 
+var UserView = React.createClass({
+  displayName: 'UserView',
+
+  getInitialState: function getInitialState() {
+    return {
+      editMode: false,
+      name: this.props.userName,
+      role1: this.props.userRoles[0],
+      role2: this.props.userRoles[1],
+      role3: this.props.userRoles[2]
+    };
+  },
+  handleEdit: function handleEdit() {
+    this.setState({ editMode: true });
+    this.forceUpdate();
+  },
+  updateName: function updateName(event) {
+    this.setState({ name: event.target.value });
+  },
+  updateRole1: function updateRole1(event) {
+    this.setState({ role1: event.target.value });
+  },
+  updateRole2: function updateRole2(event) {
+    this.setState({ role2: event.target.value });
+  },
+  updateRole3: function updateRole3(event) {
+    this.setState({ role3: event.target.value });
+  },
+  handleUpdate: function handleUpdate() {
+    var currentUser = {
+      name: this.state.name,
+      roles: [this.state.role1, this.state.role2, this.state.role3]
+    };
+    var index = this.props.count;
+    this.props.editUser(currentUser, index);
+    this.setState({ editMode: false });
+    this.forceUpdate();
+  },
+  handleDelete: function handleDelete() {
+    return {};
+  },
+  render: function render() {
+    if (this.state.editMode) {
+      return React.createElement(
+        'div',
+        { className: 'user' },
+        React.createElement('input', { className: 'username', value: this.state.name, maxLength: '25', onChange: this.updateName }),
+        React.createElement(
+          'span',
+          { className: 'roles' },
+          'Roles:'
+        ),
+        React.createElement('input', { value: this.state.role1, maxLength: '25', onChange: this.updateRole1 }),
+        React.createElement('input', { value: this.state.role2, maxLength: '25', onChange: this.updateRole2 }),
+        React.createElement('input', { value: this.state.role3, maxLength: '25', onChange: this.updateRole3 }),
+        React.createElement(
+          'button',
+          { className: 'editButton', onClick: this.handleUpdate },
+          'Update'
+        ),
+        React.createElement(
+          'button',
+          { className: 'deleteButton' },
+          'Delete'
+        )
+      );
+    } else {
+      return React.createElement(
+        'div',
+        { className: 'user' },
+        React.createElement(
+          'span',
+          { className: 'username' },
+          this.state.name
+        ),
+        React.createElement(
+          'span',
+          { className: 'roles' },
+          'Roles:'
+        ),
+        this.state.role1,
+        ' ',
+        this.state.role2,
+        ' ',
+        this.state.role3,
+        React.createElement(
+          'button',
+          { className: 'editButton', onClick: this.handleEdit },
+          'Edit'
+        ),
+        React.createElement(
+          'button',
+          { className: 'deleteButton' },
+          'Delete'
+        )
+      );
+    }
+  }
 });
 
 var AddUser = React.createClass({
@@ -158,9 +216,9 @@ var AddUser = React.createClass({
         'User Name:',
         React.createElement('input', { type: 'text', value: this.state.name, onChange: this.changeName }),
         'User Roles:',
-        React.createElement('input', { type: 'text', maxlength: '25', value: this.state.role1, onChange: this.changeRole1 }),
-        React.createElement('input', { type: 'text', maxlength: '25', value: this.state.role2, onChange: this.changeRole2 }),
-        React.createElement('input', { type: 'text', maxlength: '25', value: this.state.role3, onChange: this.changeRole3 }),
+        React.createElement('input', { type: 'text', maxLength: '25', value: this.state.role1, onChange: this.changeRole1 }),
+        React.createElement('input', { type: 'text', maxLength: '25', value: this.state.role2, onChange: this.changeRole2 }),
+        React.createElement('input', { type: 'text', maxLength: '25', value: this.state.role3, onChange: this.changeRole3 }),
         React.createElement(
           'button',
           null,
