@@ -71,9 +71,9 @@ var AddUser = React.createClass({
             { className: 'addUserTitle' },
             ' User Roles:  '
           ),
-          React.createElement('input', { className: 'form-control addUserField', type: 'text', maxLength: '20', value: this.state.role1, onChange: this.changeRole1, placeholder: 'Role 1' }),
-          React.createElement('input', { className: 'form-control addUserField', type: 'text', maxLength: '20', value: this.state.role2, onChange: this.changeRole2, placeholder: 'Role 2' }),
-          React.createElement('input', { className: 'form-control addUserField', type: 'text', maxLength: '20', value: this.state.role3, onChange: this.changeRole3, placeholder: 'Role 3' })
+          React.createElement('input', { className: 'form-control addUserField', type: 'text', maxLength: '15', value: this.state.role1, onChange: this.changeRole1, placeholder: 'Role 1' }),
+          React.createElement('input', { className: 'form-control addUserField', type: 'text', maxLength: '15', value: this.state.role2, onChange: this.changeRole2, placeholder: 'Role 2' }),
+          React.createElement('input', { className: 'form-control addUserField', type: 'text', maxLength: '15', value: this.state.role3, onChange: this.changeRole3, placeholder: 'Role 3' })
         ),
         React.createElement(
           'button',
@@ -109,7 +109,13 @@ var Main = React.createClass({
       allUsers: newUsersArray
     });
   },
-  editUser: function editUser(user, index) {
+  editUser: function editUser(user) {
+    var index = null;
+    for (var i = 0; i < this.state.allUsers.length; i++) {
+      if (this.state.allUsers[i].name === user) {
+        index = i;
+      }
+    }
     var newUsersArray = this.state.allUsers.slice();
     newUsersArray[index] = user;
     this.setState({
@@ -211,7 +217,7 @@ var UserView = React.createClass({
       name: this.state.name,
       roles: [this.state.role1, this.state.role2, this.state.role3]
     };
-    this.props.editUser(currentUser, this.props.index);
+    this.props.editUser(currentUser);
     this.setState({ editMode: false });
     this.forceUpdate();
   },

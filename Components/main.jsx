@@ -17,7 +17,13 @@ var Main = React.createClass({
       allUsers: newUsersArray
     });
   },
-  editUser: function(user, index){
+  editUser: function(user){
+    var index = null;
+    for (var i = 0; i < this.state.allUsers.length; i++){
+      if (this.state.allUsers[i].name === user){
+        index = i;
+      }
+    }
     var newUsersArray = this.state.allUsers.slice();
     newUsersArray[index] = user;
     this.setState({

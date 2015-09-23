@@ -50,9 +50,9 @@ var AddUser = React.createClass({
           </div>
           <div className="form-group">
             <label className="addUserTitle"> User Roles:  </label> 
-            <input className="form-control addUserField" type="text" maxLength="20" value={this.state.role1} onChange={this.changeRole1} placeholder="Role 1"/>
-            <input className="form-control addUserField" type="text" maxLength="20" value={this.state.role2} onChange={this.changeRole2} placeholder="Role 2"/>
-            <input className="form-control addUserField" type="text" maxLength="20" value={this.state.role3} onChange={this.changeRole3} placeholder="Role 3"/>
+            <input className="form-control addUserField" type="text" maxLength="15" value={this.state.role1} onChange={this.changeRole1} placeholder="Role 1"/>
+            <input className="form-control addUserField" type="text" maxLength="15" value={this.state.role2} onChange={this.changeRole2} placeholder="Role 2"/>
+            <input className="form-control addUserField" type="text" maxLength="15" value={this.state.role3} onChange={this.changeRole3} placeholder="Role 3"/>
           </div>
           <button className="btn btn-primary">Submit</button>
         </form>

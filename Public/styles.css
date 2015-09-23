@@ -49,13 +49,13 @@
 
 .role {
 	display: inline-block;
-	margin: 2px 2px 2px 2px;
+	margin: 2px;
 	width: 160px;
 }
 
 .roleEdit {
   display: inline-block;
-	margin: 2px 2px 2px 2px;
+	margin: 2px;
 	width: 160px;
 }
 

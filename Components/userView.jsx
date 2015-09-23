@@ -33,7 +33,7 @@ var UserView = React.createClass({
       name: this.state.name,
       roles: [this.state.role1, this.state.role2, this.state.role3]
     };
-    this.props.editUser(currentUser, this.props.index);
+    this.props.editUser(currentUser);
     this.setState({editMode: false});
     this.forceUpdate();
   },
