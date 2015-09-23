@@ -91,8 +91,8 @@ module.exports = AddUser;
 "use strict";
 
 var React = require('react');
-var AddUser = require('./addUser.js');
-var UserList = require('./userList.js');
+var AddUser = require('./addUser.jsx');
+var UserList = require('./userList.jsx');
 
 var Main = React.createClass({
   displayName: 'Main',
@@ -143,11 +143,11 @@ React.render(React.createElement(Main, null), document.getElementById('container
 
 module.exports = Main;
 
-},{"./addUser.js":1,"./userList.js":3,"react":160}],3:[function(require,module,exports){
+},{"./addUser.jsx":1,"./userList.jsx":3,"react":160}],3:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
-var UserView = require('./userView.js');
+var UserView = require('./userView.jsx');
 
 var UserList = React.createClass({
   displayName: 'UserList',
@@ -173,7 +173,7 @@ var UserList = React.createClass({
 
 module.exports = UserList;
 
-},{"./userView.js":4,"react":160}],4:[function(require,module,exports){
+},{"./userView.jsx":4,"react":160}],4:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -229,18 +229,18 @@ var UserView = React.createClass({
           { className: "form-inline rolesTitle" },
           "Roles:"
         ),
-        React.createElement("input", { className: "role", value: this.state.role1, maxLength: "20", onChange: this.updateRole1 }),
-        React.createElement("input", { className: "role", value: this.state.role2, maxLength: "20", onChange: this.updateRole2 }),
-        React.createElement("input", { className: "role", value: this.state.role3, maxLength: "20", onChange: this.updateRole3 }),
-        React.createElement(
-          "button",
-          { className: "btn btn-danger userButton", onClick: this.handleDelete },
-          "Delete"
-        ),
+        React.createElement("input", { className: "roleEdit", value: this.state.role1, maxLength: "15", onChange: this.updateRole1 }),
+        React.createElement("input", { className: "roleEdit", value: this.state.role2, maxLength: "15", onChange: this.updateRole2 }),
+        React.createElement("input", { className: "roleEdit", value: this.state.role3, maxLength: "15", onChange: this.updateRole3 }),
         React.createElement(
           "button",
           { className: "btn btn-success userButton", onClick: this.handleUpdate },
           "Update"
+        ),
+        React.createElement(
+          "button",
+          { className: "btn btn-danger userButton", onClick: this.handleDelete },
+          "Delete"
         )
       );
     } else {
@@ -277,13 +277,13 @@ var UserView = React.createClass({
           ),
           React.createElement(
             "button",
-            { className: "btn btn-danger userButton", onClick: this.handleDelete },
-            "Delete"
+            { className: "btn btn-primary userButton", onClick: this.handleEdit },
+            "Edit"
           ),
           React.createElement(
             "button",
-            { className: "btn btn-primary userButton", onClick: this.handleEdit },
-            "Edit"
+            { className: "btn btn-danger userButton", onClick: this.handleDelete },
+            "Delete"
           )
         )
       );

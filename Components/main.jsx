@@ -1,8 +1,8 @@
 "use strict";
 
 var React = require('react');
-var AddUser = require('./addUser.js');
-var UserList = require('./userList.js');
+var AddUser = require('./addUser.jsx');
+var UserList = require('./userList.jsx');
 
 var Main = React.createClass({
   getInitialState: function(){

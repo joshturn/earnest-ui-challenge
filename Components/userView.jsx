@@ -46,11 +46,11 @@ var UserView = React.createClass({
           <div className="form-inline user">
            <input className="username" value={this.state.name} maxLength="20" minLength="3" onChange={this.updateName}/>
            <span className="form-inline rolesTitle">Roles:</span> 
-           <input className="role" value={this.state.role1} maxLength="20" onChange={this.updateRole1} />
-           <input className="role" value={this.state.role2} maxLength="20" onChange={this.updateRole2} />
-           <input className="role" value={this.state.role3} maxLength="20" onChange={this.updateRole3} />
-           <button className="btn btn-danger userButton" onClick={this.handleDelete}>Delete</button>
+           <input className="roleEdit" value={this.state.role1} maxLength="15" onChange={this.updateRole1} />
+           <input className="roleEdit" value={this.state.role2} maxLength="15" onChange={this.updateRole2} />
+           <input className="roleEdit" value={this.state.role3} maxLength="15" onChange={this.updateRole3} />
            <button className="btn btn-success userButton" onClick={this.handleUpdate}>Update</button>
+           <button className="btn btn-danger userButton" onClick={this.handleDelete}>Delete</button>
          </div>
       )
     } else {
@@ -60,8 +60,8 @@ var UserView = React.createClass({
            <span className="username">{this.state.name}</span>
            <span className="rolesTitle">Roles:</span> 
            <span className="role">{this.state.role1}</span><span className="role">{this.state.role2}</span><span className="role">{this.state.role3}</span> 
-           <button className="btn btn-danger userButton" onClick={this.handleDelete}>Delete</button>
            <button className="btn btn-primary userButton" onClick={this.handleEdit}>Edit</button>
+           <button className="btn btn-danger userButton" onClick={this.handleDelete}>Delete</button>
          </div>
        </div>
     )

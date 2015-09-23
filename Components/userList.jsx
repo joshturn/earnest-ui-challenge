@@ -1,7 +1,7 @@
 "use strict";
 
 var React = require('react');
-var UserView = require('./userView.js');
+var UserView = require('./userView.jsx');
 
 var UserList = React.createClass({
   render: function(){
