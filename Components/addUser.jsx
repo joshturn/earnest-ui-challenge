@@ -8,7 +8,7 @@ var AddUser = React.createClass({
 			name: '',
 			role1: '',
 			role2: '',
-			role3: '',
+			role3: ''
 		}
 	},
   changeName: function(event){
